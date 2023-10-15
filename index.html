@@ -14,7 +14,7 @@
   </head>
   <body>
     <div>
-      <form onsubmit="savetoaxios(event)">
+      <form id="userForm">
         <label>Name</label>
         <input id="username" type="text" name="username" required>
         <label>EmailId</label>
@@ -22,10 +22,10 @@
         <label>Phone Number</label>
         <input id="Phonenumber" type="tel" name="phonenumber" required>
         <button>Submit</button>
-
       </form>
-
     </div>
+
+    <ul id="userList"></ul>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="main.js"></script>
