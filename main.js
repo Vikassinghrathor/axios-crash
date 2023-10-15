@@ -17,18 +17,37 @@ function savetoaxios(event) {
     )
     .then((response) => {
       console.log(response);
-      showNewUserOnScreen(obj);
+      showNewUserOnScreen(obj, response.data._id); // Pass the user ID from the response
     })
     .catch((error) => {
       console.log(error);
     });
 }
 
-function showNewUserOnScreen(user) {
+function showNewUserOnScreen(user, userId) {
   const userList = document.getElementById("userList");
   const listItem = document.createElement("li");
-  listItem.textContent = `Name: ${user.name}, Email: ${user.email}, Phone: ${user.phonenumber}`;
+  listItem.innerHTML = `
+    Name: ${user.name}, Email: ${user.email}, Phone: ${user.phonenumber}
+    <button onclick="deleteUser('${userId}')">Delete</button>`;
+  listItem.id = userId; // Set the ID for the list item
   userList.appendChild(listItem);
+}
+
+// Function to delete a user by their ID
+function deleteUser(userId) {
+  axios
+    .delete(
+      `https://crudcrud.com/api/e40d4e4babcc401abc0a8aea6b7efc3e/appoinmentData/${userId}`
+    )
+    .then((response) => {
+      // Remove the deleted user from the list by ID
+      const userItem = document.getElementById(userId);
+      userItem.remove();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 // Load saved users when the page loads
@@ -38,9 +57,8 @@ window.addEventListener("DOMContentLoaded", () => {
       "https://crudcrud.com/api/e40d4e4babcc401abc0a8aea6b7efc3e/appoinmentData"
     )
     .then((response) => {
-      console.log(response);
       for (let i = 0; i < response.data.length; i++) {
-        showNewUserOnScreen(response.data[i]);
+        showNewUserOnScreen(response.data[i], response.data[i]._id);
       }
     })
     .catch((error) => {
